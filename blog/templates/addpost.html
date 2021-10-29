@@ -2,20 +2,21 @@
 {% load crispy_forms_tags %}
 
 
-{% block blockname %}
+{% block content %}
+
+
 
 <div class="container py-5">
     <form action="" class="d-grid gap-4" method="post" enctype="multipart/form-data">
     
-      {%csrf_token%}
+      {% csrf_token %}
 
-      {{form | crispy}}
+      {{ form | crispy }}
       <button type="submit" class="btn btn-success">SEND</button>
     
     </form>
 
 
 </div>
-    
-{% endblock blockname %}
+{% endblock content %}
     

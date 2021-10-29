@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between alert alert-danger">
+
+    <span class="d-flex justify-content-between w-50">
+
+
+        <!-- Comment count -->
+        <a href="#" class="">
+            <i class="far fa-comment-alt ml-2">
+                {{ post.comments.count }}
+            </i>
+        </a>
+
+        <!-- Display count -->
+        <a href="" class="">
+            <i class="fas fa-eye ml-2">
+                {{ post.views.count }}
+
+            </i>
+        </a>
+
+        <!-- Like button -->
+        <a href="{% url 'like' post.id %}" class=""  role="button">
+            <i class="far fa-heart ml-2">
+                {{ post.likes.count }}
+            </i>
+        </a>
+
+
+    </span>
+
+
+    <span class="">
+        {% if request.user == post.user %}
+        <a href="{% url 'updatepost' post.id %}" class="badge bg-success">edit</a>
+        <a href="{% url 'deletepost' post.id %}" class="badge bg-danger">del</a>
+        {% endif %}
+    </span>
+
+
+</div>

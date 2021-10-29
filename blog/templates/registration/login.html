@@ -1,0 +1,31 @@
+{% extends "../base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-6 col-lg-8 col-md-10 mx-auto">
+            <div class="container">
+                <h2 class="text-center alert alert-primary mt-5 shadow">Login</h2>
+
+                <form class="d-grid gap-4 border px-3 py-5 my-5 shadow " method="post">
+                    {% csrf_token %}
+
+                    <!-- {{ form}} -->
+
+                    {% for field in form %}
+                    <div class="d-grid align-content-stretch">{{ field.label }}: <br> {{ field  }}</div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-success">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

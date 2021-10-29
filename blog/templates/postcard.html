@@ -1,0 +1,27 @@
+<div class="card shadow pb-0" style="width:300px; min-width: 250px;">
+
+    <div style="height:300px" class="p-1">
+        <a href="{% url 'postdetail' post.slug %}">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="card-image-top"
+                style="width:100%">
+        </a>
+    </div>
+     
+    <div class="card-body alert alert-success mb-0 py-0">
+        <a href="{% url 'postdetail' post.slug %}"class="card-title text-center">{{ post.title }}</a>
+
+        <p>
+            {{post.content|truncatechars:40}}
+            <span class="badge bg-primary">{{ post.category }}</span>
+            <span class="badge bg-danger">{{ post.user }}</span>
+        </p>
+    </div>
+
+    <div class="card-footer">
+        <h6>Published : {{post.publish_date}}</h6>
+        <h6>Updated : {{post.last_updated}}</h6>
+
+        {% include './actionbuttons.html' %}
+        
+    </div>
+</div>

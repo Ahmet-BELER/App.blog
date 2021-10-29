@@ -1,0 +1,60 @@
+{% extends "./base.html" %}
+
+
+{% block content %}
+
+<div class="container py-5">
+    <p class="d-grid gap-2">
+        <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample1"
+            aria-expanded="false" aria-controls="collapseWidthExample1">
+            My Bio
+        </button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample2"
+            aria-expanded="false" aria-controls="collapseWidthExample2">
+            Posts
+        </button>
+    </p>
+
+    <div class="container-fluid p-0">
+        <!-- Bio Collapse -->
+        <div class="collapse" id="collapseWidthExample1">
+            {% if profile %}
+
+            <div class="card alert alert-success">
+                <img src="{{ profile.image.url }}" alt="" />
+                <div class="card-body">
+                    <h3 class="card-title">{{request.user.username | title}}</h3>
+                    <p class="card-description">
+                        {{profile.bio}}
+                    </p>
+                    <a href="{% url 'profileupdate' %}" class="btn btn-primary d-block">UPDATE</a>
+                </div>
+            </div>
+            {% else %}
+            
+            <a href="{% url 'profileadd' %}" class="btn btn-primary d-block">ADD PROFILE</a>
+
+            {% endif %}
+        </div>
+
+        <!-- Posts Collapse -->
+        <div class="collapses" id="collapseWidthExample2">
+            <div class="alert alert-primary">
+                <!-- posts -->
+                <div class="container d-flex gap-4 flex-wrap  justify-content-center">
+                    {% for post in posts %}
+
+                    {% include './postcard.html' %}
+
+                    {% endfor %}
+                </div>
+                <!-- end posts -->
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock content %}

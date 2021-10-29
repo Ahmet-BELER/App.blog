@@ -15,7 +15,7 @@ from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent ###burası değişmeli
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,9 +44,11 @@ INSTALLED_APPS = [
     
         # 3 party apps
     'crispy_forms',
+    # 'psycopg2',
 ]
 
 MIDDLEWARE = [
+     ###burası ek gelecek
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -88,6 +90,18 @@ DATABASES = {
 }
 
 
+# DATABASES={
+#    'default':{
+#       'ENGINE':'django.db.backends.postgresql_psycopg2',
+#       'NAME': 'blog',  #db propertiesden
+#       'USER':'postgres',     #db propertiesden
+#       'PASSWORD':'qwe123',  # postgresql password pg admin şifrem
+#       'HOST':'localhost',   
+#       'PORT':'5432',            
+#    }
+# }
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -124,7 +138,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static/'  ###burası değişmeli
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

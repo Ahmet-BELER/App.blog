@@ -11,44 +11,57 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 import os
+from decouple import config
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent ###burası değişmeli
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG')
+
+
+# SECURITY WARNING: don't run with debug turned on in production!
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
-
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    ######
-    'blog',
     
-        # 3 party apps
+    
+
+    # my apps
+    'blog',
+
+    # 3 party apps
     'crispy_forms',
     # 'psycopg2',
 ]
 
 MIDDLEWARE = [
-     ###burası ek gelecek
+    # This is the default Django Security Middleware
+    'django.middleware.security.SecurityMiddleware',
+    # Simplified static file serving. 
+    # https://warehouse.python.org/project/whitenoise/ 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -89,15 +102,15 @@ DATABASES = {
     }
 }
 
-
 # DATABASES={
 #    'default':{
 #       'ENGINE':'django.db.backends.postgresql_psycopg2',
-#       'NAME': 'blog',  #db propertiesden
-#       'USER':'postgres',     #db propertiesden
-#       'PASSWORD':'qwe123',  # postgresql password pg admin şifrem
-#       'HOST':'localhost',   
-#       'PORT':'5432',            
+#       'NAME': config('NAME'),  #db propertiesden
+#       'USER':config('USER'),     #db propertiesden
+#       'PASSWORD':config('PASSWORD'),  # postgresql password
+#       'HOST':config("HOST"),   
+#       'PORT':config('PORT'),
+#       "ATOMIC_REQUESTS": True,           
 #    }
 # }
 
@@ -138,17 +151,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'  ###burası değişmeli
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfile') 
+
+ 
+# Extra places for collectstatic to find static files. 
+STATICFILES_DIRS = ( 
+    os.path.join(BASE_DIR, 'static'), 
+) 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+# for upload media with form
 MEDIA_URL = '/media/'
-
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+
+# for login redirect
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+django_heroku.settings(locals())

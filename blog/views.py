@@ -147,17 +147,17 @@ def updatepost(request, id):
     return render(request, 'updatepost.html', context)
 
 
-def deletepost(request, id): 
+def deletepost(request, id):  
     if not request.user.is_authenticated:
         return redirect('login')
-    
-    post =  Post.objects.get(pk=id)
+
+    post = Post.objects.get(pk=id)
     form = PostForm(instance=post)
-    
+
     if request.method == 'POST':
-        post.delet()
+        post.delete()
         return redirect('profile')
-    
+
     context = {
         'form': form,
     }

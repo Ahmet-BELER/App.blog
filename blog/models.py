@@ -59,8 +59,20 @@ class PostView(models.Model):
         return self.user.username.title()
 
 class Like(models.Model):  # ok
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, unique=True)
-    posts = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="likes")
+    posts = models.ForeignKey(
+        Post, on_delete=models.SET_NULL, null=True, related_name="likes")
 
     def __str__(self):
-        return self.user.username
+        return self.user.username + ' - ' + self.posts.title
+
+    class Meta:
+        # db_table = 'likes'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['posts', 'user'], name="unique_like")
+        ]
+        # unique_together = ('user', 'posts',)
+
+    

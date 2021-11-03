@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
-from .models import Post,Profile, Post, Like
-from .forms import PostForm, ProfileForm, RegisterForm, LikeForm
+from .models import Post,Profile, Post, Like,Comment,PostView
+from .forms import PostForm, ProfileForm, RegisterForm, LikeForm, CommentForm
 from django.contrib import messages 
 
 from django.contrib.auth.models import User 
@@ -183,11 +183,60 @@ def like(request,id):
        
 
 def postdetail(request, slug):
-    
+        
     post = Post.objects.get(slug=slug)
+    comments = Comment.objects.filter(post=post.id)
+    commentform = CommentForm()
+    likeform = LikeForm()
+    
+    # Post view increment
+    if not 'like' in request.POST:
+        if not 'comment' in request.POST:
+            if request.user.is_authenticated:
+                user = User.objects.get(pk=request.user.id)
+                postview = PostView(posts=post, user=user)
+                postview.save()
+            else:
+                postview= PostView(posts=post)
+                postview.save()
+
+
+    if request.method == 'POST':
+        # if not authenticate dont show another codes
+        if not request.user.is_authenticated:
+            return redirect('login')
+
+        # Like request
+        if 'like' in request.POST:
+            print('Like request')
+            user = User.objects.get(id=request.user.id)
+            post = Post.objects.get(slug=slug)
+            b1 = Like(user=user, posts=post)
+            instance = Like.objects.filter(user=b1.user, posts=b1.posts)
+            if instance:
+                instance.delete()
+            else:
+                b1.save()
+        # comment request
+        elif 'comment' in request.POST:
+            print('comment request')
+            form = CommentForm(request.POST)
+
+            # Return an object without saving to the DB
+            obj = form.save(commit=False)
+            obj.user = User.objects.get(pk=request.user.id)
+            obj.post = Post.objects.get(slug=slug)
+
+            if form.is_valid():  
+                form.save()
+                form = CommentForm()
 
     context = {
         'post': post,
+        'comments': comments,
+        'commentform': commentform,
+        'likeform': likeform,
     }
 
     return render(request, 'postdetail.html', context)
+

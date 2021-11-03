@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from .views import (
     home, 
     about, 
-    # login, 
+   
     register, 
     addpost, 
     profile, 
@@ -38,5 +38,5 @@ urlpatterns = [
 
 
     # actions
-    path('like/<int:id>', like, name='like'),
+    # path('like/<int:id>', like, name='like'),
 ]

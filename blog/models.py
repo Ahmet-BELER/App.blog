@@ -24,8 +24,11 @@ class Post(models.Model):
     image = models.ImageField(upload_to="posts/%Y")
     publish_date = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
-    
-    status = models.CharField(max_length=20)
+    STATUS_CHOICES = (
+        ("active", "active"),
+        ("deactive", "deactive"),
+    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     slug = models.SlugField(
         verbose_name='slug',
         allow_unicode=True,
